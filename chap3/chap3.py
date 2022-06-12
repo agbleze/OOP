@@ -154,3 +154,18 @@ class Subclass_S(LeftSubclass_S, RightSubclass_S):
 ss = Subclass_S()
 ss.call_me()
 # %%
+
+
+############################ Polymorphism  ################################
+#%%
+from pathlib import Path
+
+class AudioFile:
+    ext: str
+    
+    def __init__(self, filepath: Path) -> None:
+        if not filepath.suffix == self.ext:
+            raise ValueError("Invalid file format")
+
+
+
