@@ -1,6 +1,6 @@
 #%% 
 from __future__ import annotations
-from typing import List
+from typing import List, Any
 
 from pyparsing import Optional
 
@@ -15,7 +15,9 @@ class ContactList(list["Contact"]):
 class Contact:
     all_contacts: ContactList()
     
-    def __init__(self, name: str, email: str) -> None:
+    def __init__(self, /, name: str = "", email: str ="", 
+                 **kwargs: Any) -> None:
+        super().__init__(**kwargs)
         self.name = name
         self.email = email
         Contact.all_contacts.append(self)
@@ -86,11 +88,73 @@ max(articles_read, key=len)
 # OVERRIDING nd super
 # multiple inheritance
 
-class Friend(Contact):
-    def __init__(self, name: str, email: str, phone: str) -> None:
-        super().__init__(name, email)
+class AddressHolder:
+    def __init__(self,
+                 /, 
+                 street:str, 
+                 city: str, 
+                 state: str, 
+                 code: str,
+                 **kwargs: Any
+                 )->None:
+        self.street = street
+        self.city = city
+        self.state = state
+        self.code = code
+        
+
+class Friend(Contact, AddressHolder):
+    def __init__(self, 
+                 name: str, 
+                 email: str, 
+                 phone: str,
+                 street: str,
+                 city: str,
+                 state: str,
+                 code: str
+                 ) -> None:
+        Contact.__init__(self, name, email)
+        AddressHolder.__init__(self, street, city, state, code)
         self.phone = phone
 # %%
-f = Friend("Dusty", "Dusty@private.com", "555-1212")
-Contact.all_contacts
+#f = Friend("Dusty", "Dusty@private.com", "555-1212")
+#Contact.all_contacts
+
+######################################################################
+# %% Diamond inheritance
+class BaseClass:
+    num_base_calls = 0
+    
+    def call_me(self):
+        print("Calling methods on BaseClass")
+        self.num_base_calls += 1
+        
+class LeftSubclass_S(BaseClass):
+    num_left_calls = 0
+    
+    def call_me(self) -> None:
+        super().call_me()
+        print("Calling methond on LeftSubclass")
+        self.num_left_calls += 1
+        
+class RightSubclass_S(BaseClass):
+    num_right_calls = 0
+    
+    def call_me(self) -> None:
+        super().call_me()
+        print("Calling method on the RightSubclass")
+        self.num_right_calls += 1
+        
+class Subclass_S(LeftSubclass_S, RightSubclass_S):
+    num_sub_calls = 0
+    
+    def call_me(self) -> None:
+        super().call_me()
+        print("cALLING method on subclass")
+        self.num_sub_calls += 1
+        
+
+# %%
+ss = Subclass_S()
+ss.call_me()
 # %%
