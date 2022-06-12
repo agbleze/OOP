@@ -31,3 +31,15 @@ class Supplier(Contact):
             )
 
 # %%
+c = Contact("Some Body", "somebody@example.net")
+s = Supplier("Sup Plier", "supplier@example.com")
+print(c.name, c.email, s.name, s.email)
+# %%
+from pprint import pprint
+pprint(c.all_contacts)
+
+
+
+
+
+# %%
