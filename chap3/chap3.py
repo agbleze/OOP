@@ -97,6 +97,7 @@ class AddressHolder:
                  code: str,
                  **kwargs: Any
                  )->None:
+        super().__init__(**kwargs)
         self.street = street
         self.city = city
         self.state = state
@@ -105,16 +106,11 @@ class AddressHolder:
 
 class Friend(Contact, AddressHolder):
     def __init__(self, 
-                 name: str, 
-                 email: str, 
-                 phone: str,
-                 street: str,
-                 city: str,
-                 state: str,
-                 code: str
+                 /,
+                 phone: str = "",
+                 **kwargs: Any
                  ) -> None:
-        Contact.__init__(self, name, email)
-        AddressHolder.__init__(self, street, city, state, code)
+        super().__init__(**kwargs)
         self.phone = phone
 # %%
 #f = Friend("Dusty", "Dusty@private.com", "555-1212")
