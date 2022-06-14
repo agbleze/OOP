@@ -1,6 +1,6 @@
 #%%
 
-from typing import List, Optional
+from typing import List, Optional, cast
 class EvenOnly(List[int]):
     def append(self, value: int) -> None:
         if not isinstance(value, int):
@@ -190,9 +190,34 @@ valid = {"sepal_length": "5.1", "sepal_width": "3.5",
          "petal_length": "1.4", "petal_width": "0.2",
          "species": "Iris-setosa"}
 
+#%%
+rks = TrainingKnownSample.from_dict(valid)
 
 
 
 
+# %% validating enumerated values
+from enum import Enum
+class Species(Enum):
+    Setosa = "Iris-setosa"
+    Versicolour = "Iris-versicolour"
+    Viginica = "Iris-virginica"
+    
+Species("Iris-setosa")    
+Species("Iris-pinniped")    
+        
+# %%
+from typing import Set
+
+class Domain(Set[str]):
+    def validate(self, value: str) -> str:
+        if value in self:
+            return value
+        raise ValueError(f"invalid {value!r}")
+
+species = Domain({"Iris-setosa", "Iris-versicolour", "Iris-virginica"})
+
+species.validate("Iris-versicolour")
+species.validate("odobenidae")
 
 # %%
