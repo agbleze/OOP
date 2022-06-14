@@ -88,4 +88,33 @@ except InvalidWithdrawal as ex:
     print("I'm sorry, but your withdrawal is "
           "more than your balance by "
           f"${ex.overage()}")
+
 # %%
+row = {"sepal_length": "5.1", "sepal_width": "3.5",
+       "petal_length": "1.4", "petal_width": "0.2",
+       "sepcies": "Iris-setosa"}
+# %%
+@classmethod
+def from_dict(cls, row: dict[str, str]) -> "KnownSample":
+    if row["species"] not in {
+        "Iris-setosa", "Iris-versicolour", "Iris-virginica"}:
+        raise InvalidSampleError(f"invalid species in {row!r}")
+    try:
+        return cls(
+            species=row["species"],
+            sepal_length=float(row["sepal_length"]),
+            sepal_width=float(row["sepal_width"]),
+            petal_length=float(row["petal_length"]),
+            petal_width=float(row["petal_width"]),
+        )
+    except ValueError as ex:
+        raise InvalidSampleError(f"invalid {row!r}")
+    
+    
+class TrainingKnownSample(KnownSample):
+    @classmethod
+    def from_dict(cls, row: dict[str, str]) ->  "TrainingKnownSample":
+        return cast(TrainingKnownSample, super().from_dict(row))   
+    
+    
+    
