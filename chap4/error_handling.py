@@ -221,3 +221,6 @@ species.validate("Iris-versicolour")
 species.validate("odobenidae")
 
 # %%
+class TrainingData:
+    def __init__(self, name: str) -> None:
+        pass
