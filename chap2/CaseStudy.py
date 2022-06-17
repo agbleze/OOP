@@ -7,6 +7,8 @@ from typing import Optional, Iterable, List
 #%%
 from typing import Optional
 
+from chap4.error_handling import TrainingKnownSample
+
 
 class Sample:
     def __init__(self, sepal_length: float, 
@@ -121,9 +123,21 @@ class TrainingData:
     def load(self, raw_data_source: Iterable[dict[str, str]])-> None:
         """Load and partition the raw data
         """
+        bad_count = 0
         for n, row in enumerate(raw_data_source):
-            ... filter and extract subsets (See Chapter 6)
-            ... Create self.training and self.testing subsets
+            try:
+                if n % 5 == 0:
+                    test = TestingKnownSample.from_dict(row)
+                    self.testing.append(test)
+                else:
+                    train = TrainingKnownSample.from_dict(row)
+                    self.training.append(train)
+            except InvalidSampleError as ex:
+                print(f"Row {n+1}: {ex}")
+                bad_count += 1 
+        if bad_count != 0:
+             print(f"{bad_count} invalid rows")
+             return   
         self.uploaded = datetime.datetime.now(tz=datetime.timezone.utc)
         
     def test(self, parameter: Hyperparameter)->None:
