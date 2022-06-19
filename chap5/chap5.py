@@ -1,6 +1,6 @@
 from __future__ import annotations
 from math import hypot
-from typing import Tuple, List
+from typing import Tuple, List, Optional, Iterable
 
 Point = Tuple[float, float]
 
