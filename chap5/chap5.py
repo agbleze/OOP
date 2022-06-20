@@ -14,5 +14,10 @@ def perimeter(polygon: Polygon) -> float:
     return sum(distance(p1, p2) for p1, p2 in pairs)
 
 
+#################################################
+class Point:
+    def __init__(self, x: float, y:float) -> None:
+        self.x = x
+        self.y = y
 
 
