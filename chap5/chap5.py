@@ -19,5 +19,8 @@ class Point:
     def __init__(self, x: float, y:float) -> None:
         self.x = x
         self.y = y
+        
+    def distance(self, other: 'Point') -> float:
+        return hypot(self.x -other.x, self.y - other.y)
 
 
