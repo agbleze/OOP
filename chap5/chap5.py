@@ -28,5 +28,9 @@ class Polygon:
         self.vertices: List[Point] = []
         
     def add_point(self, point: Point) -> None:
+        self.vertices: List[Point] = []
         
+    def perimeter(self) -> float:
+        pairs = zip(self.vertices, self.vertices[1:] + self.vertices[:1])
+        return sum(p1.distance(p2) for p1, p2 in pairs)
 
