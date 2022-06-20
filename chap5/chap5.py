@@ -1,3 +1,4 @@
+#%%
 from __future__ import annotations
 from math import hypot
 from typing import Tuple, List, Optional, Iterable
@@ -33,4 +34,15 @@ class Polygon:
     def perimeter(self) -> float:
         pairs = zip(self.vertices, self.vertices[1:] + self.vertices[:1])
         return sum(p1.distance(p2) for p1, p2 in pairs)
+
+
+# %%
+square = Polygon()
+square.add_point(Point(1,1))
+square.add_point(Point(1,2))
+square.add_point(Point(2,2))
+square.add_point(Point(2,1))
+square.perimeter()
+
+
 
