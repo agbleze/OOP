@@ -23,4 +23,10 @@ class Point:
     def distance(self, other: 'Point') -> float:
         return hypot(self.x -other.x, self.y - other.y)
 
+class Polygon:
+    def __init__(self) -> None:
+        self.vertices: List[Point] = []
+        
+    def add_point(self, point: Point) -> None:
+        
 
