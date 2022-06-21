@@ -1,7 +1,7 @@
 #%%
 from __future__ import annotations
 from math import hypot
-from typing import Tuple, List, Optional, Iterable
+from typing import Tuple, List, Optional, Iterable, Union
 
 Point = Tuple[float, float]
 
@@ -62,4 +62,71 @@ class Polygon_2:
 square = Polygon_2([Point(1,1), Point(2,2), Point(2,1)])        
 square.perimeter()        
     
+# %%
+Pair = Tuple[float, float]
+Point_or_Tuple = Union[Point, Pair]
+
+class Polygon_3:
+    def __init__(self, vertices: Optional[Iterable[Point_or_Tuple]] = None) -> None:
+        self.vertices: List[Point] = []
+        if vertices:
+            for point_or_tuple in vertices:
+                self.vertices.append(self.make_point(point_or_tuple))
+    @staticmethod
+    def make_point(item: Point_or_Tuple) -> Point:
+        return item if isinstance(item, Point) else Point(*item)
+                
+
+#%% problematic approach suggest by others -- Not encourange
+class Color:
+    def __init__(self, rgb_value: int, name: str) -> None:
+        self._rgb_value = rgb_value
+        self._name = name
+        
+    def set_name(self, name: str) -> None:
+        self._name = name
+        
+    def get_name(self) -> str:
+        return self._name
+    def set_rgb_value(self, rgb_value: int) -> None:
+        self._rgb_value = rgb_value
+        
+    def get_rgb_value(self) -> int:
+        return self._rgb_value
+    
+#%%
+c = Color(0xff0000, "bright red")
+c.get_name()    
+c.set_name("red")
+c.get_name()    
+    
+#%% expanding the above class
+class Color_V:
+    def __init__(self,rgb_value: int, name: str) -> None:
+        self._rgb_value = rgb_value
+        if not name:
+            raise ValueError(f"Invalid name {name!r}")
+        self._name = name
+        
+        def set_name(self, name: str) -> None:
+            if not name:
+                raise ValueError(f"Invalid name {name!r}")
+            self._name = name
+            
+class Color_VP:
+    def __init__(self, rgb_value: int, name: str) -> None:
+        self._rgb_value = rgb_value
+        if not name: 
+            raise ValueError(f"Invalid name {name!r}")            
+        self._name = name
+        
+    def _set_name(self, name: str) -> None:
+        if not name:
+            raise ValueError(f"Invalid name {name!r}")    
+        self._name = name
+        
+    def _get_name(self) -> str:
+        return self._name
+    
+    name = property(_get_name, _set_name)    
 # %%
