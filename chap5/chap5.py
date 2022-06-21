@@ -130,3 +130,13 @@ class Color_VP:
     
     name = property(_get_name, _set_name)    
 # %%
+c = Color_VP(0xff0000, "bright red")
+c.name
+
+c.name = "red"
+c.name
+
+c.name = ''
+
+
+
