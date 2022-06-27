@@ -237,7 +237,31 @@ a = AverageList([10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5])
 a.average   
 
 #%% Manage objects
+from __future__ import annotations
+import fnmatch
+from pathlib import Path
+import re
+import zipfile
 
+class ZipReplace:
+    def __init__(
+        self,
+        archive: Path,
+        pattern: str,
+        find: str,
+        replace: str
+    ) -> None:
+        self.archive_path = archive,
+        self.pattern = pattern,
+        self.find = find,
+        self.replace = replace
+        
+    def find_and_replace(self) -> None:
+        input_path, output_path = self.make_backup()
+        
+        with zipfile.ZipFile(output_path, "w") as output:
+            with zipfile.Zipfile(input_path) as input:
+                self.copy_and_transform(input, output)
 
 
 
