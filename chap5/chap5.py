@@ -348,6 +348,12 @@ class SampleReader:
                     raise BadSampleRow(f"Invalid {row!r}") from ex
                 yield sample
 
+class BadSampleRow(ValueError):
+    pass
+                
+                
+    
+
 
 
            
