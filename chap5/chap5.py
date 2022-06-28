@@ -365,7 +365,23 @@ class KnownSample(Sample):
         petal_width: float,
         purpose: int,
         species: str,
-    ) -> None:                
+    ) -> None:
+        purpose_enum = Purpose(purpose)
+        if purpose_enum not in {Purpose.Training, Purpose.Testing}:
+            raise ValueError(
+                f"Invalid purpose: {purpose!r}: {purpose_enum}"
+            ) 
+        super().__init__(
+            sepal_length = sepal_length,
+            sepal_width = sepal_width,
+            petal_length = petal_length,
+            petal_width = petal_width
+        )   
+        self.purpose = purpose_enum
+        self.species = species
+        self._classification: Optional[str] = None
+    def matches(self) -> bool:
+        return self.species == self.classification            
     
 
 
