@@ -281,26 +281,48 @@ class ZipProcessor(ABC):
             output.write(extracted, item.filename)
             self.remove_under_cwd(extracted)
             
-            
-            if (not item.is_dir() and fnmatch(item.filename, self.pattern)):
-                print(f"Transform {item}")
-                input_text = extracted.read_text()
-                output_text = re.sub(self.find, self.replace, self.pattern)
-                extracted.write_text(output_text)
-            else:
-                print(f"Ignore {item}")
-                output.write(extracted, item.filename)
-                extracted.unlink()
-                for parent in extracted.parents:
+    def matches(self, item: zipfile.ZipInfo) -> bool:
+        return(not item.is_dir() and fnmatch(item.filename, self._pattern))
+    
+    def remove_under_cwd(self, extracted: Path) -> None:
+        extracted.unlink()
+        for parent in extracted.parents:
                     if parent == Path.cwd():
                         break
                     parent.rmdir()
+    
+    @abstractmethod
+    def transform(self, extracted: Path) -> None:
+        ...
+class TextTweaker(ZipProcessor):
+    def __init__(self, archive: Path) -> None:
+        super().__init__(archive)
+        self.find: str
+        self.replace: str
+    
+    def find_and_replace(self, find: str, replace: str) -> "TextTweak":
+        self.find = find
+        self.replace = replace
+        return self 
+    
+    def transform(self, extracted: Path) -> None: 
+        input_text = extracted.read_text()
+        output_text = re.sub(self.find, self.replace, input_text)
+        extracted.write_text(output_text) 
+        
+#%%
+from PIL import Image
+class ImgTweaker(ZipProcessor):
+    def transform(self, extracted: Path) -> None:
+        image = Image.open(extracted)
+        scaled = image.resize(size=(640, 960))
+        scaled.save(extracted)
                 
                 
-if __name__ == "__main__":
-    sample_zip = Path("sample.zip")
-    zr = ZipReplace(sample_zip, "*.md", "xyzzy", "plover's egg")
-    zr.find_and_replace()
+# if __name__ == "__main__":
+#     sample_zip = Path("sample.zip")
+#     zr = ZipReplace(sample_zip, "*.md", "xyzzy", "plover's egg")
+#     zr.find_and_replace()
                 
 
 
