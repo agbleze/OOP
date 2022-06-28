@@ -257,7 +257,7 @@ class ZipProcessor(ABC):
         input_path, output_path = self.make_backup()
         
         with zipfile.ZipFile(output_path, "w") as output:
-            with zipfile.Zipfile(input_path) as input:
+            with zipfile.ZipFile(input_path) as input:
                 self.copy_and_transform(input, output)
                 
     def make_backup(self) -> tuple[Path, Path]:
@@ -317,8 +317,40 @@ class ImgTweaker(ZipProcessor):
         image = Image.open(extracted)
         scaled = image.resize(size=(640, 960))
         scaled.save(extracted)
-                
-                
+ 
+
+#%% # case study     
+class SampleReader:
+    """See iris.names for attribute ordering in bezdekIris.data file
+    """
+    target_class = Sample
+    header = [
+        "sepal_length", "sepal_width",
+        "petal_length", "petal_width", "class"
+    ]
+    
+    def __init__(self, source:Path) -> None:
+        self.source = source
+        
+    def sample_iter(self) -> Iterator[Sample]:
+        target_class = self.target_class
+        with self.source.open() as source_file:
+            reader = csv.DictReader(source_file, self.header)
+            for row in reader:
+                try:
+                    sample = target_class(
+                        sepal_length=float(row["sepal_length"]),
+                        sepal_width=float(row["sepal_width"]),
+                        petal_length=float(row["petal_length"]),
+                        petal_width=float(row["petal_width"])
+                    )
+                except ValueError as ex:
+                    raise BadSampleRow(f"Invalid {row!r}") from ex
+                yield sample
+
+
+
+           
 # if __name__ == "__main__":
 #     sample_zip = Path("sample.zip")
 #     zr = ZipReplace(sample_zip, "*.md", "xyzzy", "plover's egg")
