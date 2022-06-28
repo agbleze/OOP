@@ -382,7 +382,12 @@ class KnownSample(Sample):
         self._classification: Optional[str] = None
     def matches(self) -> bool:
         return self.species == self.classification            
-    
+    @property
+    def classification(self) -> Optional[str]:
+        if self.purpose == Purpose.Testing:
+            return self._classification
+        else:
+            raise AttributeError(f"Training samples have no classification")
 
 
 
