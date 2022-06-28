@@ -356,7 +356,16 @@ class Purpose(enum.IntEnum):
     Testing = 1
     Training = 2
                 
-                
+class KnownSample(Sample):
+    def __init__(
+        self,
+        sepal_length: float,
+        sepal_width: float,
+        petal_length: float,
+        petal_width: float,
+        purpose: int,
+        species: str,
+    ) -> None:                
     
 
 
