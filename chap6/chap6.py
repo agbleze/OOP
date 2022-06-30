@@ -94,3 +94,9 @@ class Comparable(Protocol):
     def __ge__(self, other: Any) -> bool: ...
     def __gt__(self, other: Any) -> bool: ...      
         
+        
+        
+        
+        
+        
+# %%
