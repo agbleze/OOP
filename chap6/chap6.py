@@ -115,7 +115,22 @@ class D4(Die):
     def roll(self) -> None:
         self.face = random.choice((1,2,3,4))
         
-
+class D6(Die):
+    def roll(self) -> None:
+        self.face = random.randint(1,6)
+        
+#%%
+class Dice(abc.ABC):
+    def __init__(self, n: int, die_class: Type[Die]) -> None:
+        self.dice = [die_class() for _ in range(n)]
+        
+    @abc.abstractmethod
+    def roll(self) -> None:
+        ...
+    
+    @property
+    def total(self) -> int:
+        return sum(d.face for d in self.dice)
 
 
 
