@@ -95,8 +95,35 @@ class Comparable(Protocol):
     def __gt__(self, other: Any) -> bool: ...      
         
         
+                
+# %%
+import abc
+from numpy import random
+class Die(abc.ABC):
+    def __init__(self) -> None:
+        self.face: int
+        self.roll()
         
+    @abc.abstractmethod
+    def roll(self) -> None:
+      ...
+    
+    def __repr__(self) -> str:
+        return f"{self.face}"
+#%%
+class D4(Die):
+    def roll(self) -> None:
+        self.face = random.choice((1,2,3,4))
         
-        
-        
+
+
+
+
+
+
+
+
+
+
+
 # %%
