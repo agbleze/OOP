@@ -218,6 +218,35 @@ class DDice:
         elif isinstance(die_class, int):
             new_classes = [type(d) for d in self.dice]
             new = DDice(*new_classes).plus(die_class)
+            return new
+        else:
+            return NotImplemented
+        
+    def __radd__(self, die_class: Any) -> "DDice":
+        if isinstance(die_class, type) and issubclass(die_class, Die):
+            new_classes = [die_class] + [type(d) for d in self.dice]
+            new = DDice(*new_classes).plus(self.adjust)
+            return new
+        elif isinstance(die_class, int):
+            new_classes = [type(d) for d in self.dice]
+            new = DDice(*new_classes).plus(die_class)
+            return new
+        else:
+            return NotImplemented
+        
+    def __mul__(self, n: Any) -> "DDice":
+        if isinstance(n, int):
+            new_classes = [type(d) for d in self.dice for _ in range(n)]
+            return DDice(*new_classes).plus(self.adjust)
+        else:
+            NotImplemented
+            
+    def __rmul__(self, n: Any) -> "DDice":
+        if isinstance(n, int):
+            new_classes = [type(d) for d in self.dice for _ in range(n)]
+            return DDice(*new_classes).plus(self.adjust)
+        else:
+            return NotImplemented
  
  
  
