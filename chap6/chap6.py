@@ -4,7 +4,7 @@ import abc
 from typing import Iterable, Iterator, Sequence, Mapping
 from typing import Protocol, Any, overload, Union
 import bisect
-
+from collections.abc import (Container, Sized, Set)
 class MediaLoader(abc.ABC):
     @abc.abstractmethod
     def play(self) -> None:
@@ -28,7 +28,7 @@ class Ogg(MediaLoader):
 o = Ogg()
 
 # %%
-from collections.abc import Container
+
 Container.__abstractmethods__
 # %%
 class OddIntegers:
@@ -98,7 +98,7 @@ class Comparable(Protocol):
                 
 # %%
 import abc
-from numpy import random
+import random
 class Die(abc.ABC):
     def __init__(self) -> None:
         self.face: int
@@ -120,6 +120,7 @@ class D6(Die):
         self.face = random.randint(1,6)
         
 #%%
+from typing import Type, Set
 class Dice(abc.ABC):
     def __init__(self, n: int, die_class: Type[Die]) -> None:
         self.dice = [die_class() for _ in range(n)]
@@ -132,7 +133,56 @@ class Dice(abc.ABC):
     def total(self) -> int:
         return sum(d.face for d in self.dice)
 
+class SimpleDice(Dice):
+    def roll(self) -> None:
+        for d in self.dice:
+            d.roll()
 
+
+#%%
+sd = SimpleDice(6, D6)
+sd.roll()
+sd.total
+
+#%%
+from typing import Iterable
+class YachtDice(Dice):
+    def __init__(self) -> None:
+        super().__init__(5, D6)
+        self.saved: Set[int] = set()
+        
+    def saving(self, positions: Iterable[int]) -> "YachtDice":
+        if not all(0 <= n < 6 for n in positions):
+            raise ValueError("Invalid position")
+        self.saved = set(positions)
+        return self
+    def roll(self) -> None:
+        for n, d in enumerate(self.dice):
+            if n not in self.saved:
+                d.roll()
+        self.saved = set()
+        
+
+#%%
+sd = YachtDice()
+sd.roll()
+sd.dice
+sd.saving([0,1,2]).roll()
+sd.dice
+
+#%%
+Die.__abstractmethods__
+Die.roll.__isabstractmethod__
+
+#%%
+# extending metaclass
+class DieM(metaclass = abc.ABCMeta):
+    def __init__(self) -> None:
+        self.face: int
+        self.roll()
+    @abc.abstractmethod
+    def roll(self) -> None:
+        ...
 
 
 
