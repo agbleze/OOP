@@ -247,17 +247,115 @@ class DDice:
             return DDice(*new_classes).plus(self.adjust)
         else:
             return NotImplemented
+        
+    def __iadd__(self, die_class: Any) -> "DDice":
+        if isinstance(die_class, type) and issubclass(die_class, Die):
+            self.dice += [die_class()]
+            return self
+        else:
+            return NotImplemented
+        
+        
+#%% Extending built-ins
+d = {"a": 42, "a": 3.14} 
  
+#%%
+from typing import Dict, Hashable, Any, Tuple, Mapping, Iterable, cast
+
+DictInit = Union[Iterable[Tuple[Hashable, Any]],
+                Mapping[Hashable, Any]]
+class NoDupDict(Dict[Hashable, Any]):
+    def __setitem__(self, key, value) -> None:
+        if key in self:
+            raise ValueError(f"duplicate {key!r}")
+        super().__setitem__(key, value)
+        
+    def __init__(self, init: DictInit = None, **kwargs: Any) -> None:
+        if isinstance(init, Mapping):
+            super().__init__(init, **kwargs)
+        elif isinstance(init, Iterable):
+            for k, v, in cast(Iterable[Tuple[Hashable, Any]], init):
+                self[k] = v
+        elif init is None:
+            super().__init__(**kwargs)
+        else:
+            super().__init__(init, *kwargs)
  
+#%%
+nd = NoDupDict() 
+nd["a"] = 1
+nd["a"] = 2
  
- 
- 
- 
- 
- 
- 
- 
- 
+#%% Metaclass
+# This  defines how class is created. A class
+# statement is used to create a class without specifying
+# the metaclass option, the Type class is used by
+# to create the class. The Type abstarct class has 
+# a collection of other subclasses that can be 
+# specified as metaclass option in which case 
+# the subclass is used instead in creating the class
+# The subclass may have the potential of changing 
+# how class is created in general sense
+
+import logging
+from functools import wraps
+from typing import Type, Any
+
+class DieMeta(abc.ABCMeta):
+    def __new__(metaclass: Type[type],
+                name: str,
+                bases: tuple[type, ...],
+                namespace: dict[str, Any],
+                **kwargs: Any
+                ) -> "DieMeta":
+        if "roll" in namespace and not getattr(
+            namespace["roll"], "__isabstractmethod__", False
+        ):
+            namespace.setdefault("logger", logging.getLogger(name))
+            original_method = namespace["roll"]
+            
+            @wraps(original_method)
+            def logged_roll(self: "DieLog") -> None:
+                original_method(self)
+                self.logger.info(f"Rolled {self.face}")
+            
+            namespace["roll"] = logged_roll
+        new_object = cast(
+            "DieMeta", abc.ABCMeta.__new__(
+                metaclass, name, bases, namespace)
+        )
+        return new_object
+
+#%%
+class DieLog(metaclass=DieMeta):
+    logger: logger.Logger
+    
+    def __init__(self) -> None:
+        self.face: int
+        self.roll()
+        
+    @abc.abstractmethod
+    def roll(self) -> None:
+        ...
+    
+    def __repr__(self) -> str:
+        return f"{self.face}"
+
+
+#%%
+class D6L(DieLog):
+    def roll(self) -> None:
+        """Some documentation of D6L
+        """
+        self.face = random.randrange(1,7)
+        
+#%%
+import sys
+logging.basicConfig(stream=sys.stdout, level=logging.INFO) 
+
+#%%
+d2 = D6L() 
+d2.face
  
  
  
