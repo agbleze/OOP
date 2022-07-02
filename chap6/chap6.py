@@ -1,7 +1,7 @@
 #%%
 from __future__ import annotations
 import abc
-from typing import Iterable, Iterator, Sequence, Mapping
+from typing import Iterable, Iterator, Sequence, Mapping, TypedDict
 from typing import Protocol, Any, overload, Union
 import bisect
 from collections.abc import (Container, Sized, Set)
@@ -393,8 +393,38 @@ class SamplePartition(List[SampleDict], abc.ABC):
     def testing(self) -> List[TestingKnownSample]:
         ...
     
+class SampleDict(TypedDict):
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
+    species: str 
  
- 
+class ShufflingSamplePartition(SamplePartition):
+    def __init__(
+        self,
+        iterable: Optional[Iterable[SampleDict]] = None,
+        *,
+        training_subset: float = 0.80,
+    ) -> None:
+        super().__init__(iterable,
+                         training_subset=training_subset)
+        self.split: Optional[int] = None
+        
+    def shuffle(self) -> None:
+        if not self.split:
+            random.shuffle(self)
+            self.split = int(len(self) * self.training_subset)
+            
+    @property
+    def training(self) -> List[TrainingKnownSample]:
+        self.shuffle()
+        return [TrainingKnownSample(**sd) for sd in self[: self.split]]
+    @property
+    def testing(self) -> List[TestingKnownSample]:
+        self.shuffle()
+        return [TestingKnownSample(**sd) for sd in self[self.split :]]
+    
  
  
  
