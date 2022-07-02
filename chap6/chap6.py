@@ -382,6 +382,17 @@ class SamplePartition(List[SampleDict], abc.ABC):
             super().__init__(iterable)
         else:
             super().__init__()
+            
+    @abc.abstractproperty
+    @property
+    def training(self) -> List[TrainingKnownSample]:
+        ...
+        
+    @abc.abstractproperty
+    @property
+    def testing(self) -> List[TestingKnownSample]:
+        ...
+    
  
  
  
