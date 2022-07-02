@@ -357,8 +357,9 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 d2 = D6L() 
 d2.face
  
- 
- 
+#%% extending list class with two sublists
+class SamplePartition(List[SampleDict], abc.ABC):
+    
  
  
  
