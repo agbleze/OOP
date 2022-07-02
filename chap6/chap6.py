@@ -359,7 +359,17 @@ d2.face
  
 #%% extending list class with two sublists
 class SamplePartition(List[SampleDict], abc.ABC):
-    
+    @overload
+    def __init__(self, *, training_subset: float = 0.80)-> None:
+        ...
+        
+    @overload
+    def __init__(self,
+                 iterable: Optional[Iterable[SampleDict]] = None,
+                 *,
+                 training_subset: float = 0.80
+                 ) -> None:
+        ...
  
  
  
