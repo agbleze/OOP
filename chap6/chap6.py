@@ -481,6 +481,15 @@ class CountingDealingPartition(DealingPartition):
         else:
             self._testing.append(TestingKnownSample(**item))
         self.counter += 1
+        
+    @property
+    def training(self) -> List[TrainingKnownSample]:
+        return self._training
+    
+    @property
+    def testing(self) -> List[TestingKnownSample]:
+        return self._testing
+        
  
  
     
