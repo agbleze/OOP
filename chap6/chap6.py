@@ -492,10 +492,4 @@ class CountingDealingPartition(DealingPartition):
         
  
  
-    
 
-
-
-
-
-# %%
