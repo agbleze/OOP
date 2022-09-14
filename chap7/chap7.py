@@ -56,10 +56,14 @@ class Stock(NamedTuple):
 #%%
 Stock("AAPL", 123.52, 137.98, 53.15)
 
+#%%
+s2 = Stock("AAPL", 123.52, high=137.98, low=53.15)
 
 
+#%%
+s2.high
 
+symbol, current, high, low = s2
 
+# %% tuple can contain mutable elements
 
-
-# %%
