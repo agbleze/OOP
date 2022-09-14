@@ -52,6 +52,12 @@ class Stock(NamedTuple):
     current: float
     high: float
     low: float
+    
+    @property
+    def middle(self) -> float:
+        return (self.high + self.low)/2
+    
+    
 
 #%%
 Stock("AAPL", 123.52, 137.98, 53.15)
@@ -65,5 +71,15 @@ s2.high
 
 symbol, current, high, low = s2
 
+#%%
+s2.middle
 # %% tuple can contain mutable elements
+t = ("Relayer", ["Gates of Delirium", "Sound Chaser"])
+t[1].append("To Be Over")
+t
 
+
+
+
+
+# %%
