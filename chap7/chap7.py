@@ -36,7 +36,11 @@ rd.randint(1, 7+1)
 class MyObject:
     pass
 
-
+#%% 
+import datetime
+def middle(stock, date):
+    symbol, current, high, low = stock
+    return (((high + low)/2), date)
 
 
 
