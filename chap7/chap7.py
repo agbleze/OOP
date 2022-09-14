@@ -42,6 +42,15 @@ def middle(stock, date):
     symbol, current, high, low = stock
     return (((high + low)/2), date)
 
+#%% NamedTuple
+from typing import NamedTuple
+
+#%%
+class Stock(NamedTuple):
+    symbol: str
+    current: float
+    high: float
+    low: float
 
 
 
@@ -51,6 +60,4 @@ def middle(stock, date):
 
 
 
-
-
-
+# %%
