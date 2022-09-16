@@ -73,6 +73,7 @@ symbol, current, high, low = s2
 
 #%%
 s2.middle
+
 # %% tuple can contain mutable elements
 t = ("Relayer", ["Gates of Delirium", "Sound Chaser"])
 t[1].append("To Be Over")
