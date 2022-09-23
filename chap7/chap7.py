@@ -84,4 +84,4 @@ t
 
 
 # %% dataclasses
-
+from dataclasses import dataclass
