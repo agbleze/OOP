@@ -83,6 +83,114 @@ t
 # %% dataclasses
 from dataclasses import dataclass
 
+@dataclass
+class Stock:
+    symbol: str
+    current: float
+    high: float
+    low: float
+
+#%%
+s = Stock("AAPL", 123.52, 137.98, 53.15)
+
+#%%
+s.current
+
+# %%
+s.current = 122.25
+s
+
+#%%
+s.unexpected_attribute = 'allowed'
+s.unexpected_attribute
+
+
+#%% dataclass can take default values
+@dataclass
+class StockDefaults:
+    name: str
+    current: float = 0.0
+    high: float = 0.0
+    low: float = 0.0
+
+#%%
+StockDefaults("GOOG")
+
+#%%
+StockDefaults("GOOG", 1826.77, 1847.20, 1013.54)
+
+# %% EQUALITY TEST FOR dataclasses
+stock2 = Stock(symbol='AAPL', current=122.25, high=137.98, low=53.15)
+
+#%%
+s == stock2
+
+#%% 
+stock3 = StockDefaults("GOOG", 1826.77, 1847.20, 1013.54)
+
+stock2 == stock3 
+
+# %% adding comparison to dataclass
+@dataclass(order=True)
+class StockOrdered:
+    name: str
+    current: float = 0.0
+    high: float = 0.0
+    low: float = 0.0
+
+# %%
+stock_ordered1 = StockOrdered("GOOG", 1826.77, 1847.20, 1013.54)
+stock_ordered2 = StockOrdered("GOOG")
+stock_ordered3 = StockOrdered("GOOG", 1728.28, high=1733.18, low=1666.33)
+
+#%%
+stock_ordered1 < stock_ordered2
+
+from pprint import pprint
+pprint(sorted([stock_ordered1, stock_ordered2, stock_ordered3]))
+
+
+#%% DICTIONARY
+stocks = {"GOOG": (111.2, 123.23, 29182.12, 442.123),
+          "MSFT": (110.31, 891.120, 123.12, 129.19)
+          }
+
+#%%
+stocks["GOOG"]
+
+#%%
+stocks["RIMM"] # Keyerror
+
+# %%
+print(stocks.get("RIMM"))
+print(stocks.get("RIMM", "NOT FOUND"))
+
+#%% USE setdefault to set values if key not found
+# else return the value of key found
+stocks.setdefault("GOOG", "INVALID")
+
+#%% will set value bcos key if not found
+stocks.setdefault("BB", (11.34, 10.33, 982.12, 341))
+
+# %%
+stocks["BB"]
+
+#%% # items() returns tuple of key, values and 
+# can be used in loops
+for stock, values in stocks.items():
+    print(f"{stock} last value is {values[0]}")
+
+#%%
+
+
+
+
+
+
+
+
+
+
 
 
 
