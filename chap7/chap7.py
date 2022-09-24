@@ -181,12 +181,61 @@ for stock, values in stocks.items():
     print(f"{stock} last value is {values[0]}")
 
 #%%
+x = 2020
+y = 2305843009213695971 #2182137291786219
+hash(x) == hash(y)
 
+#%% defaultdict to provide default value when key 
+# is not found in dict
+from collections import defaultdict
 
+def letter_frequency_2(sentence: str) -> defaultdict[str, int]:
+    frequencies: defaultdict[str, int] = defaultdict(int)
+    for letter in sentence:
+        frequencies[letter] += 1
+    return frequencies
 
+#%% write function and pass them into defaultdict
+from dataclasses import dataclass
 
+@dataclass
+class Prices:
+    current: float = 0.0
+    high: float = 0.0
+    low: float = 0.0
+    
+#%% class will run as function without providing values
+Prices()
 
+#%% pass class to defaultdict
+portfolio = defaultdict(Prices)
+portfolio['GOOG']
 
+#%%
+portfolio["AAPL"] = Prices(current=122.25, high=137.98, low=53.15)
+
+#%%
+pprint(portfolio)
+
+#%% Counter will return dict with key as itmes being
+# counted and vaues as number of items
+import collections
+from collections import Counter
+responses = [
+    "vanilla", "chocolate", "vanilla", "vanilla",
+    "caramel", "strawberry", "vanilla"
+]
+
+def letter_frequency_3(sentence: str) -> Counter[str]:
+    return Counter(sentence)
+
+#%%
+letter_frequency_3("try this text")
+
+# %%
+favorites = collections.Counter(responses).most_common(1)
+name, frequency = favorites[0]
+name
 
 
 
