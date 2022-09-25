@@ -242,7 +242,9 @@ name
 from typing import Optional, cast, Any
 import datetime
 
-
+@dataclass(frozen=True)
+class MultiItem:
+    
 
 
 
