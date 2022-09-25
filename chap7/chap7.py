@@ -244,7 +244,11 @@ import datetime
 
 @dataclass(frozen=True)
 class MultiItem:
-    
+    data_source: str
+    timestamp: Optional[float]
+    creation_date: Optional[str]
+    name: str
+    owner_etc: str
 
 
 
