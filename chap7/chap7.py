@@ -238,6 +238,7 @@ name, frequency = favorites[0]
 name
 
 
+#%% sorting
 
 
 
