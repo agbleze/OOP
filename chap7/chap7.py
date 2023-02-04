@@ -3,8 +3,6 @@
 o = object()
 
 # %%
-o.x = 5
-# %%
 import random
 # %%
 random.randint(5, 500)
