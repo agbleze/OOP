@@ -269,9 +269,17 @@ class MultiItem:
         return self_datetime < other_datetime
 
 
+#%%
+mi_0 = MultiItem("Local", 1607280522.68012, None, "Some File", "etc. 0")
+mi_1 = MultiItem("Remote", None, "2020-12-06T13:47:52.849153", "Another File", "etc. 1")
+mi_2 = MultiItem("Local", 1579373292.452993, None, "This File", "etc. 2")
+mi_3 = MultiItem("Remote", None, "2020-01-18T13:48:12.452993", "That File", "etc. 3")
 
+file_list = [mi_0, mi_1, mi_2, mi_3]
+file_list.sort()
 
-
+from pprint import pprint
+pprint(file_list)
 
 
 # %%
