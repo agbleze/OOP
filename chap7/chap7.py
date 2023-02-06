@@ -253,6 +253,11 @@ class MultiItem:
             self_datetime = datetime.datetime.fromtimestamp(
                 cast(float, self.timestamp)
             )
+        else:
+            self_datetime = datetime.datetime.fromisoformat(
+                cast(str, self.creation_date)
+            )
+            
 
 
 
