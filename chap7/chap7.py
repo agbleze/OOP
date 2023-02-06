@@ -257,7 +257,16 @@ class MultiItem:
             self_datetime = datetime.datetime.fromisoformat(
                 cast(str, self.creation_date)
             )
-            
+        
+        if other.data_source == "Local":
+            other_datetime = datetime.datetime.fromtimestamp(
+                    cast(float, other.timestamp)
+            )
+        else:
+            other_datetime = datetime.datetime.fromisoformat(
+                cast(str, other.creation_date)
+            )
+        return self_datetime < other_datetime
 
 
 
