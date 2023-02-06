@@ -247,6 +247,12 @@ class MultiItem:
     creation_date: Optional[str]
     name: str
     owner_etc: str
+    
+    def __lt__(self, other: Any) -> bool:
+        if self.data_source == "Local":
+            self_datetime = datetime.datetime.fromtimestamp(
+                cast(float, self.timestamp)
+            )
 
 
 
