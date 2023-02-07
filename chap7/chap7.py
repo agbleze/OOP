@@ -250,11 +250,11 @@ class MultiItem:
     
     def __lt__(self, other: Any) -> bool:
         if self.data_source == "Local":
-            self_datetime = datetime.datetime.fromtimestamp(
+            self.datetime = datetime.datetime.fromtimestamp(
                 cast(float, self.timestamp)
             )
         else:
-            self_datetime = datetime.datetime.fromisoformat(
+            self.datetime = datetime.datetime.fromisoformat(
                 cast(str, self.creation_date)
             )
         
@@ -266,7 +266,7 @@ class MultiItem:
             other_datetime = datetime.datetime.fromisoformat(
                 cast(str, other.creation_date)
             )
-        return self_datetime < other_datetime
+        return self.datetime < other_datetime
 
 
 #%%
@@ -280,6 +280,48 @@ file_list.sort()
 
 from pprint import pprint
 pprint(file_list)
+
+
+# %% set
+lib = set()
+
+lib.add(1)
+
+lib.update(9,4,2,3,4)
+
+# %% Queue
+from pathlib import Path
+
+class ListQueue(List[Path]):
+    def put(self, item: Path) -> None:
+        self.append(item)
+        
+    def get(self, item: Path) -> Path:
+        return self.pop(0)
+    
+    def empty(self) -> bool:
+        return len(self) == 0
+    
+    
+
+# %%
+
+from typing import Deque
+
+class DeQueue(Deque[Path]):
+    def put(self, item: Path) -> None:
+        self.append(item)
+        
+    def get(self) -> Path:
+        return self.popleft()
+    
+    def empty(self) -> bool:
+        return len(self) == 0
+
+
+
+
+
 
 
 # %%
