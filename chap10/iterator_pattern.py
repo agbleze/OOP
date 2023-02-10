@@ -1,3 +1,4 @@
+#%%
 from typing import Iterable, Iterator
 
 
@@ -21,6 +22,22 @@ class CapitalIterator(Iterator[str]):
         word = self.words[self.index]
         self.index += 1
         return word
+
+
+
+
+iterable = CapitalIterable("the quick brown fox jumps over the lazy dog")
+
+
+iterator = iter(iterable)
+
+while True:
+    try:
+        print(next(iterator))
+    except StopIteration:
+        break
+
+# %%
 
 
 
