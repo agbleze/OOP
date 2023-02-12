@@ -75,4 +75,20 @@ fantasy_title
 
 
 
-# %%
+# %% generator
+
+from pathlib import Path
+
+full_log_path = Path.cwd() / "data" / "sample.log"
+warning_log_path = Path.cwd() / "data" / "warnings.log"
+
+with full_log_path.open() as source:
+    warning_lines = (line for line in source if "WARN" in line)
+    with warning_log_path.open("w") as target:
+        for line in warning_lines:
+            target.write(line) 
+
+
+
+
+# %% generator function
