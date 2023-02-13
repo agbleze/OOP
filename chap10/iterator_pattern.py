@@ -92,3 +92,51 @@ with full_log_path.open() as source:
 
 
 # %% generator function
+
+import csv
+import re
+from pathlib import Path
+from typing import Match,cast
+
+def extract_and_parse_1(full_log_path: Path,
+                        warning_log_path: Path
+                        ) -> None:
+    with warning_log_path.open("w") as target:
+        writer = csv.writer(target, delimiter="\t")
+        pattern = re.compile(
+            r"(\w\w\w \d\d, \d\d\d\d \d\d:\d\d:\d\d) (\w+) (.*)")
+        with full_log_path.open() as source:
+            for line in source:
+                if "WARN" in line:
+                    line_groups = cast(
+                        Match[str], pattern.match(line)).groups()
+                    writer.writerow(line_groups)
+
+
+# %% USING A GENERATOR 
+
+from typing import Iterator, Iterable
+
+def warnings_filter(soruce: Iterable[str]) -> Iterator[tuple[str, ...]]:
+    pattern = re.compile(
+            r"(\w\w\w \d\d, \d\d\d\d \d\d:\d\d:\d\d) (\w+) (.*)"
+        )
+    for line in source:
+        if "WARN" in line:
+            yield tuple(
+                cast(type=Match[str], value=pattern.match(line)).groups()
+            )
+
+
+def extract_and_parse_3(
+    full_log_path: Path, warning_log_path: Path
+) -> None:
+    with warning_log_path.open(mode="w") as target:
+        writer = csv.writer(target, delimiter="\t")
+        with full_log_path.open() as infile:
+            filter = warnings_filter(infile)
+            for line_groups in filter:
+                writer.writerow(line_groups)
+            
+
+
