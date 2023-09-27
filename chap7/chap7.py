@@ -60,10 +60,13 @@ class Stock(NamedTuple):
 #%%
 Stock("AAPL", 123.52, 137.98, 53.15)
 
+
 #%%
 s2 = Stock("AAPL", 123.52, high=137.98, low=53.15)
 
 
+for i in s2:
+    print(i)
 #%%
 s2.high
 
